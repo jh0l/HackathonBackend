@@ -24,13 +24,15 @@ type VerifyAnswerResponse struct {
 func (this *VerifyAnswerController) Post() {
 	var request VerifyAnswerRequest
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &request); err != nil {
+		// something is wrong when parse the request
 		res := VerifyAnswerResponse{
 			Status: "Fail",
-			Message: "invalid request",
+			Message: "invalid request: " + err.Error(),
 			Correct: false,
 		}
 		this.Data["json"] = res
 		this.ServeJSON()
+		return
 	}
 
 	uri := request.URI
