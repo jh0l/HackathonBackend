@@ -53,15 +53,6 @@ func InitDatabase() error {
 		number_remaining NOT NULL DEFAULT 0,
 		FOREIGN KEY(charge_point) REFERENCES charge_points(id)
 	);
-
-	CREATE TABLE IF NOT EXISTS sales (
-		id INTEGER PRIMARY KEY,
-		charge_point INTEGER NOT NULL,
-		description TEXT NOT NULL DEFAULT "",
-		price_tiers TEXT NOT NULL DEFAULT "{}",
-		date_ends DATETIME NOT NULL,
-		FOREIGN KEY(charge_point) REFERENCES charge_points(id)
-	)
 	`
 	_, err = Db.Exec(stmt)
 	if err != nil {
