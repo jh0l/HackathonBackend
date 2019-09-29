@@ -54,7 +54,7 @@ func (this *LoginController) Post() {
 	res := LoginResponse{
 		Status:  "success",
 		Message: "Login Successful",
-		Token:   "",
+		Token:   token,
 	}
 	this.Data["json"] = res
 	this.ServeJSON()

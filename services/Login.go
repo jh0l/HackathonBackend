@@ -1,12 +1,29 @@
 package services
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"database/sql"
+
+	"errors"
 
 	"fmt"
 
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/astaxie/beego"
 )
+
+func NewHashToken(username string) (token string, err error) {
+	secret := beego.AppConfig.String("server_secret")
+	key := []byte(secret)
+	user := []byte(username)
+	mac := hmac.New(sha256.New, key)
+	mac.Write(user)
+	hashStr, err := fmt.Printf("%x", mac)
+	if err != nil {
+		return "", err
+	}
+	return string(hashStr), nil
+}
 
 func VerifyLogin(usrname, pwd string) (token string, err error) {
 	//fmt.Println(url, selection)
@@ -22,6 +39,9 @@ func VerifyLogin(usrname, pwd string) (token string, err error) {
 	`
 	// select
 	stmt, err := db.Prepare(q)
+	if err != nil {
+		fmt.Println(err.Error(), "qwrqe5t")
+	}
 	defer stmt.Close()
 
 	rows, err := stmt.Query(usrname)
@@ -32,7 +52,14 @@ func VerifyLogin(usrname, pwd string) (token string, err error) {
 
 	for rows.Next() {
 		rows.Scan(&username, &password)
-		if pwd == password
 	}
-	return "", nil
+	if pwd == password {
+		hash, err := NewHashToken(username)
+		if err != nil {
+			return "", err
+		}
+		return hash, nil
+	}
+
+	return "", errors.New("password does not match")
 }
