@@ -13,11 +13,15 @@ import (
 
 func init() {
 	logos, err := services.ReadLogos("./logos.json")
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 	err = services.InitDatabase()
 
 	if err != nil {
 		fmt.Println(err.Error())
-		return
 	}
 
 	services.OurLogo = logos

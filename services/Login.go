@@ -22,6 +22,7 @@ func NewHashToken(username string) (token string, err error) {
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("secret: %s\n, key: %s\n, user: %s\n, mac: %s\n, hashStr: %s\n", secret, key, user, mac, hashStr)
 	return string(hashStr), nil
 }
 

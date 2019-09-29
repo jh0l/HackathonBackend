@@ -6,9 +6,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var Db *DB
+var Db *sql.DB
 
-func InitDatabase() {
+func InitDatabase() (err error) {
 
 	Db, err := sql.Open("sqlite3", "file:./big_ol.db?_fk")
 	if err != nil {
@@ -60,10 +60,20 @@ func InitDatabase() {
 		FOREIGN KEY(charge_point) REFERENCES charge_points(id)
 	)
 	`
-
-	_, err = db.Exec(stmt)
+	_, err = Db.Exec(stmt)
 	if err != nil {
 		return err
 	}
 
+	seed := `
+	INSERT INTO "users"("id","username","password","date_created") VALUES (NULL,'jh0l','1234567','2019-09-29T12:54:04');
+	`
+
+	_, err = Db.Exec(seed)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
