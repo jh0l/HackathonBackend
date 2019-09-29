@@ -7,18 +7,16 @@ import (
 	"time"
 )
 
-
 type Logo struct {
-	Name string `json:"name"`
-	ShortName string `json:"shortname"`
-	URL string `json:"url"`
-	Files []string `json:"files"`
+	Name      string   `json:"name"`
+	ShortName string   `json:"shortname"`
+	URL       string   `json:"url"`
+	Files     []string `json:"files"`
 }
 
 type Logos []Logo
 
 var OurLogo Logos
-
 
 func ReadLogos(path string) (logos Logos, err error) {
 	file, err := os.Open(path)
@@ -31,7 +29,6 @@ func ReadLogos(path string) (logos Logos, err error) {
 	err = jsonParser.Decode(&logos)
 	return logos, err
 }
-
 
 func GetRandomLogos() (uri string, options []string) {
 	length := len(OurLogo)
@@ -61,6 +58,5 @@ func GetRandomLogos() (uri string, options []string) {
 	rand.Seed(time.Now().UnixNano())
 	randomUrl := "https://cdn.svgporn.com/logos/" + logos[rand.Intn(4)].Files[0]
 	return randomUrl, options
-
 
 }
