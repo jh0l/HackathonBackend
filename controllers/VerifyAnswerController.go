@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/astaxie/beego"
 	"hackathon/services"
+
+	"github.com/astaxie/beego"
 )
 
 type VerifyAnswerController struct {
@@ -11,14 +12,14 @@ type VerifyAnswerController struct {
 }
 
 type VerifyAnswerRequest struct {
-	URI string `json:"uri"`
+	URI       string `json:"uri"`
 	Selection string `json:"selection"`
 }
 
 type VerifyAnswerResponse struct {
-	Status string `json:"status"`
+	Status  string `json:"status"`
 	Message string `json:"message"`
-	Correct bool `json:"correct"`
+	Correct bool   `json:"correct"`
 }
 
 func (this *VerifyAnswerController) Post() {
@@ -26,7 +27,7 @@ func (this *VerifyAnswerController) Post() {
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &request); err != nil {
 		// something is wrong when parse the request
 		res := VerifyAnswerResponse{
-			Status: "Fail",
+			Status:  "Fail",
 			Message: "invalid request: " + err.Error(),
 			Correct: false,
 		}
@@ -40,12 +41,11 @@ func (this *VerifyAnswerController) Post() {
 	correct := services.VerifyAnswer(uri, selection)
 
 	res := VerifyAnswerResponse{
-		Status: "success",
+		Status:  "success",
 		Message: "You've got an answer",
 		Correct: correct,
 	}
 	this.Data["json"] = res
 	this.ServeJSON()
-
 
 }
