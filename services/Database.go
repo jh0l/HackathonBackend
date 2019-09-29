@@ -7,17 +7,11 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-<<<<<<< HEAD
-var Db *sql.DB
-
-func InitDatabase() (err error) {
-=======
 // Db - database connection to be used in all other modules
 var Db *sql.DB
 
 // InitDatabase -  Initialize the database
 func InitDatabase() error {
->>>>>>> 4a4f3a3195eb6df8218aa21a558bdf491e7d82d5
 
 	Db, err := sql.Open("sqlite3", "file:./big_ol.db?_fk")
 	if err != nil {
@@ -80,14 +74,9 @@ func InitDatabase() error {
 
 	_, err = Db.Exec(seed)
 
-<<<<<<< HEAD
 	if err != nil {
 		return err
 	}
-=======
-	_, err = Db.Exec(stmt)
-	return err
->>>>>>> 4a4f3a3195eb6df8218aa21a558bdf491e7d82d5
 
 	return nil
 }
