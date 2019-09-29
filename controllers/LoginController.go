@@ -22,7 +22,7 @@ type LoginResponse struct {
 	Token   string `json:"token"`
 }
 
-func (this *LoginController) Post() {
+func (this *LoginController) Login() {
 	var request LoginRequest
 	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &request); err != nil {
 		// something is wrong when parse the request
@@ -52,10 +52,46 @@ func (this *LoginController) Post() {
 	}
 
 	res := LoginResponse{
-		Status:  "success",
+		Status:  "Success",
 		Message: "Login Successful",
 		Token:   token,
 	}
+	this.Data["json"] = res
+	this.ServeJSON()
+}
+
+func (this *LoginController) Signup() {
+	var request LoginRequest
+	if err := json.Unmarshal(this.Ctx.Input.RequestBody, &request); err != nil {
+		res := LoginResponse{
+			Status:  "Fail",
+			Message: "invalid request" + err.Error(),
+			Token:   "",
+		}
+		this.Data["json"] = res
+		this.ServeJSON()
+		return
+	}
+
+	token, err := services.NewAccount(request.Username, request.Password)
+
+	if err != nil {
+		res := LoginResponse{
+			Status:  "Fail",
+			Message: "invalid request " + err.Error(),
+			Token:   "",
+		}
+		this.Data["json"] = res
+		this.ServeJSON()
+		return
+	}
+
+	res := LoginResponse{
+		Status:  "Success",
+		Message: "Account Created",
+		Token:   token,
+	}
+
 	this.Data["json"] = res
 	this.ServeJSON()
 }

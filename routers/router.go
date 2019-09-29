@@ -10,7 +10,8 @@ func init() {
 	//beego.Router("/", &controllers.MainController{})
 	beego.Router("/get_question", &controllers.GetQuestionController{}, "get:Get")
 	beego.Router("/verify_answer", &controllers.VerifyAnswerController{}, "post:Post")
-	beego.Router("/login", &controllers.LoginController{}, "post:Post")
+	beego.Router("/login", &controllers.LoginController{}, "post:Login")
+	beego.Router("/signup", &controllers.LoginController{}, "post:Signup")
 
 	beego.Router("/api/charge_points", &controllers.ChargePointController{}, "get:List", "post:Add")
 	beego.Router("/api/charge_points/:id([0-9]+)", &controllers.ChargePointController{}, "get:GetInfo", "post:Edit", "delete:Delete")
