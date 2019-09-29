@@ -3,12 +3,15 @@ package services
 import (
 	"database/sql"
 
+	// i want it anyway
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var Db *DB
+// Db - database connection to be used in all other modules
+var Db *sql.DB
 
-func InitDatabase() {
+// InitDatabase -  Initialize the database
+func InitDatabase() error {
 
 	Db, err := sql.Open("sqlite3", "file:./big_ol.db?_fk")
 	if err != nil {
@@ -61,9 +64,7 @@ func InitDatabase() {
 	)
 	`
 
-	_, err = db.Exec(stmt)
-	if err != nil {
-		return err
-	}
+	_, err = Db.Exec(stmt)
+	return err
 
 }
